@@ -1,6 +1,26 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from modulate_rf import *
+import pickle as pkl
+
+# plotting parameters
+params = {'legend.fontsize': 20,
+          'figure.figsize': (9.5, 8.5),
+          'axes.labelsize': 23,
+          'axes.titlesize': 23,
+          'xtick.labelsize': 23,
+          'ytick.labelsize': 23,
+          'image.cmap': 'jet',
+          'lines.linewidth': 2,
+          'lines.markersize':5,
+          'font.family': 'sans-serif'}
+
+plt.rc('text', usetex=False)
+plt.rc('font', family='serif')
+plt.rcParams.update(params)
+
+# load sequence of phase noise kicks, coast3-setting3
+noise_kicks = pkl.load(open('PN_realNoise_v1.pkl', 'rb'))
 
 savefig = False
 
@@ -39,11 +59,11 @@ if savefig:
     plt.savefig('modulating_RF_turns.png')
 plt.show()
 
-plt.plot(time, white_PN+mod_rf_signal, label='White noise + modulation')
-plt.plot(time,  mod_rf_signal, label='RF modulation')
-plt.plot(time, white_PN, label='White noise')
+plt.plot(time*1e-3, white_PN+mod_rf_signal, label='White noise + modulation')
+plt.plot(time*1e-3,  mod_rf_signal, label='RF modulation')
+plt.plot(time*1e-3, white_PN, label='White noise')
 plt.ylabel('Amplitude (rad)')
-plt.xlabel('Time (s)')
+plt.xlabel('Time (ms)')
 plt.xlim(0, 700/f_rev)
 plt.legend(loc=4)
 if savefig:
@@ -51,12 +71,11 @@ if savefig:
 plt.show()
 
 
-
-plt.plot(time, rad_to_sec(white_PN+mod_rf_signal, f_rf)*1e12, label='White noise + modulation')
-plt.plot(time,  rad_to_sec(mod_rf_signal, f_rf)*1e12, label='RF modulation')
-plt.plot(time, rad_to_sec(white_PN, f_rf)*1e12, label='White noise')
+plt.plot(time*1e-3, rad_to_sec(white_PN+mod_rf_signal, f_rf)*1e12, label='White noise + modulation')
+plt.plot(time*1e-3,  rad_to_sec(mod_rf_signal, f_rf)*1e12, label='RF modulation')
+plt.plot(time*1e-3, rad_to_sec(white_PN, f_rf)*1e12, label='White noise')
 plt.ylabel('Amplitude (ps)')
-plt.xlabel('Time (s)')
+plt.xlabel('Time (ms)')
 plt.xlim(0, 700/f_rev)
 plt.legend(loc=4)
 if savefig:
